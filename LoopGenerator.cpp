@@ -10,34 +10,38 @@ class Cell
 public:
     Cell() = default;
     Cell(int t, int b, int l, int r)
-        :
-        t(t), b(b), l(l), r(r)
-    {}
+    {
+        map['t'] = t;
+        map['b'] = b;
+        map['l'] = l;
+        map['r'] = r;
+    }
 public:
     void ToggleCell()
     {
-        t = (t + 1) % 2;
-        b = (b + 1) % 2;
-        l = (l + 1) % 2;
-        r = (r + 1) % 2;
+        for(auto& link : map)
+        {
+            link.second = (link.second + 1) % 2;
+        }
     }
     void ToggleLink(char c)
     {
-        int link = *map[c];
-        *map[c] = (link + 1) % 2;
+        assert(map.count(c));
+        int link = map[c];
+        map[c] = (link + 1) % 2;
     }
-public:
-    int t = 0;
-    int b = 0;
-    int l = 0;
-    int r = 0;
-private:
-    std::unordered_map<char, int*> map = 
+    int GetLink(char c) const
     {
-        std::make_pair<char, int*>('t', &t),
-        std::make_pair<char, int*>('b', &b),
-        std::make_pair<char, int*>('l', &l),
-        std::make_pair<char, int*>('r', &r)
+        assert(map.count(c) > 0);
+        return map.at(c);
+    }
+private:
+    std::unordered_map<char, int> map = 
+    {
+        std::make_pair<char, int>('t', 0),
+        std::make_pair<char, int>('b', 0),
+        std::make_pair<char, int>('l', 0),
+        std::make_pair<char, int>('r', 0)
     };
 };
 
@@ -91,7 +95,7 @@ public:
             for(int x = 0; x < width; x++)
             {
                 Cell currentCell = GetCell(x,y);
-                if(currentCell.t > 0)
+                if(currentCell.GetLink('t') > 0)
                 {
                     // top left corner of cell
                     // (use width + 1, because now in grid-coords)
@@ -99,7 +103,7 @@ public:
                     // top right corner of cell
                     indices.emplace_back(y * (width + 1) + x + 1);
                 }
-                if(currentCell.l > 0)
+                if(currentCell.GetLink('l') > 0)
                 {
                     // top left corner of cell
                     indices.emplace_back(y * (width + 1) + x);
