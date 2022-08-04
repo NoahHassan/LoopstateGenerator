@@ -5,48 +5,48 @@
 #include <fstream>
 #include <iostream>
 
-class Cell
-{
-public:
-    Cell() = default;
-    Cell(int t, int b, int l, int r)
-    {
-        map['t'] = t;
-        map['b'] = b;
-        map['l'] = l;
-        map['r'] = r;
-    }
-public:
-    void ToggleCell()
-    {
-        for(auto& link : map)
-        {
-            link.second = (link.second + 1) % 2;
-        }
-    }
-    void ToggleLink(char c)
-    {
-        assert(map.count(c));
-        int link = map[c];
-        map[c] = (link + 1) % 2;
-    }
-    int GetLink(char c) const
-    {
-        assert(map.count(c) > 0);
-        return map.at(c);
-    }
-private:
-    std::unordered_map<char, int> map = 
-    {
-        std::make_pair<char, int>('t', 0),
-        std::make_pair<char, int>('b', 0),
-        std::make_pair<char, int>('l', 0),
-        std::make_pair<char, int>('r', 0)
-    };
-};
-
 class Field
 {
+private:    
+    class Cell
+    {
+    public:
+        Cell() = default;
+        Cell(int t, int b, int l, int r)
+        {
+            map['t'] = t;
+            map['b'] = b;
+            map['l'] = l;
+            map['r'] = r;
+        }
+    public:
+        void ToggleCell()
+        {
+            for(auto& link : map)
+            {
+                link.second = (link.second + 1) % 2;
+            }
+        }
+        void ToggleLink(char c)
+        {
+            assert(map.count(c));
+            int link = map[c];
+            map[c] = (link + 1) % 2;
+        }
+        int GetLink(char c) const
+        {
+            assert(map.count(c) > 0);
+            return map.at(c);
+        }
+    private:
+        std::unordered_map<char, int> map = 
+        {
+            std::make_pair<char, int>('t', 0),
+            std::make_pair<char, int>('b', 0),
+            std::make_pair<char, int>('l', 0),
+            std::make_pair<char, int>('r', 0)
+        };
+    };
 public:
     Field(int width, int height)
         :
