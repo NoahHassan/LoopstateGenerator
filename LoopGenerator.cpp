@@ -78,14 +78,6 @@ public:
     }
     int GetWidth() const { return width; }
     int GetHeight() const { return height; }
-    Cell GetCell(int x, int y) const
-    {
-        assert(0 <= x);
-        assert(0 <= y);
-        assert(x < width);
-        assert(y < height);
-        return cells[y * width + x];
-    }
     // returns vector of indices for links to draw
     std::vector<int> GetLinks() const
     {
@@ -114,6 +106,15 @@ public:
         }
 
         return std::move(indices);
+    }
+private:
+    Cell GetCell(int x, int y) const
+    {
+        assert(0 <= x);
+        assert(0 <= y);
+        assert(x < width);
+        assert(y < height);
+        return cells[y * width + x];
     }
 private:
     int width;
