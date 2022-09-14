@@ -125,25 +125,23 @@ private:
 int main()
 {
     int size;
-    int nCells;
 
     std::cout << "size: ";
     std::cin >> size;
-    std::cout << "nCells: ";
-    std::cin >> nCells;
 
     Field cellField(size, size);
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<int> dst(1, size - 2); // ignore the boundary
+    std::uniform_int_distribution<int> dst(0, 1);
 
-    for(int n = 0; n < nCells; n++)
+    for(int x = 1; x < size - 1; x++) // ignore the boundary
     {
-        int x = dst(gen);
-        int y = dst(gen);
-
-        cellField.ToggleCell(x,y);
+        for(int y = 1; y < size - 1; y++)
+        {
+            if(dst(gen))
+                cellField.ToggleCell(x,y);
+        }
     }
 
     std::vector<int> indices = cellField.GetLinks();
